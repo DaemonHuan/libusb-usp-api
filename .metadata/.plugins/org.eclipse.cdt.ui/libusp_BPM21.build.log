@@ -1,0 +1,29 @@
+15:26:09 **** Incremental Build of configuration Release for project libusp_BPM21 ****
+make all 
+Building file: ../src/libusp_bpm21.cpp
+Invoking: Cross G++ Compiler
+g++ -I"D:\workspace\ew-libusp-bpm-api" -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/libusp_bpm21.d" -MT"src/libusp_bpm21.o" -o "src/libusp_bpm21.o" "../src/libusp_bpm21.cpp"
+../src/libusp_bpm21.cpp: In function 'int dll_test(int)':
+../src/libusp_bpm21.cpp:12:9: warning: unused variable 'json' [-Wunused-variable]
+  cJSON *json = cJSON_Parse("");
+         ^~~~
+Finished building: ../src/libusp_bpm21.cpp
+ 
+Building file: D:/workspace/ew-libusp-bpm-api/cjson/cJSON.c
+Invoking: Cross GCC Compiler
+gcc -I"D:\workspace\ew-libusp-bpm-api" -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"cjson/cJSON.d" -MT"cjson/cJSON.o" -o "cjson/cJSON.o" "D:/workspace/ew-libusp-bpm-api/cjson/cJSON.c"
+Finished building: D:/workspace/ew-libusp-bpm-api/cjson/cJSON.c
+ 
+Building file: D:/workspace/ew-libusp-bpm-api/cjson/cJSON_Utils.c
+Invoking: Cross GCC Compiler
+gcc -I"D:\workspace\ew-libusp-bpm-api" -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"cjson/cJSON_Utils.d" -MT"cjson/cJSON_Utils.o" -o "cjson/cJSON_Utils.o" "D:/workspace/ew-libusp-bpm-api/cjson/cJSON_Utils.c"
+Finished building: D:/workspace/ew-libusp-bpm-api/cjson/cJSON_Utils.c
+ 
+Building target: libusp_BPM21.dll
+Invoking: Cross G++ Linker
+g++ -shared -Wl,--out-implib=libusp_BPM21.a -o "libusp_BPM21.dll"  ./src/libusp_bpm21.o  ./cjson/cJSON.o ./cjson/cJSON_Utils.o   
+Finished building target: libusp_BPM21.dll
+ 
+
+15:26:18 Build Finished. 0 errors, 1 warnings. (took 8s.595ms)
+

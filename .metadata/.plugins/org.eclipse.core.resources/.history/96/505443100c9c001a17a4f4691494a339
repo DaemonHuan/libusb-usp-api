@@ -1,0 +1,173 @@
+/*
+ * libusp_bpm22.h
+ *
+ *  Created on: 2020年5月22日
+ *      Author: JK
+ */
+
+#ifndef __LIBUSP_BPM22_H__
+#define __LIBUSP_BPM22_H__
+
+#if !defined(__cplusplus)
+#define inline __inline
+#endif
+
+///* on windows with mingw32 */
+#if defined(__GNUC__)
+	#define PRE_CDECL
+	#define POST_CDECL __attribute__((cdecl))
+	#define PRE_STDCALL
+	#define POST_STDCALL __attribute__((stdcall))
+	#define PRE_FASTCALL
+	#define POST_FASTCALL __attribute__((fastcall))
+
+	#if defined(LIBUSP_BPM22_EXPORTS)
+		#define LIBUSP_BPM22_API __attribute__ ((visibility("default")))
+	#else
+		#define LIBUSP_BPM22_API
+	#endif
+#else
+	#define PRE_CDECL __cdecl
+	#define POST_CDECL
+	#define PRE_STDCALL __stdcall
+	#define POST_STDCALL
+	#define PRE_FASTCALL __fastcall
+	#define POST_FASTCALL
+
+	#if defined(LIBUSP_BPM22_EXPORTS)
+		#define LIBUSP_BPM22_API __declspec(dllexport)
+	#else
+		#define LIBUSP_BPM22_API __declspec(dllimport)
+	#endif
+#endif /* __GNUC__ */
+
+typedef unsigned char BYTE;
+// 6.2. 状态结构体
+typedef struct DeviceStatus {
+    BYTE iSize; //结构体大小，便于扩展
+    BYTE iType; //票据类型
+    BYTE iState; //设备运行状态
+    BYTE bError; //发生错误
+    BYTE bLastFault; //最后一个错误码
+    BYTE bRetrackError; //废票箱取出
+    BYTE bRetrackHavePaper; //废票箱有票
+    BYTE bBox1HavePaper; //票箱 1 有票
+    BYTE bBox2HavePaper; //票箱 2 有票
+    BYTE bBox3HavePaper; //票箱 3 有票
+    BYTE bBox4HavePaper; //票箱 4 有票
+    BYTE bBox1Exist; //票箱 1 存在
+    BYTE bBox2Exist; //票箱 2 存在
+    BYTE bBox3Exist; //票箱 3 存在
+    BYTE bBox4Exist; //票箱 4 存在
+    BYTE bFeedCheckOpen; //分纸模块打开
+    BYTE bOCRCoverOpen; //OCR 模块上盖打开
+    BYTE bPrintHeadOpen; //打印模块抬起
+    BYTE bScanUnitOpen; //扫描模块上盖打开
+    BYTE bOutputBoxOpen; //出票箱上盖打开
+    BYTE bGateOpen; //闸门打开
+    BYTE bChannelHasPaper; //通道有票
+    BYTE bWaitOCRHasPaper; //等待 OCR 位置有票
+    BYTE bOCRHasPaper; //OCR 位置有票
+    BYTE bWaitPrintHasPaper; //等待打印位置有票
+    BYTE bScanHasPaper; //扫描位置有票
+    BYTE bWaitOutHasPaper; //等待出票位置有票
+    BYTE bStackerHavePaper; //出票箱有票
+    BYTE bGateError; //闸门错误
+    BYTE bBoardError; //压板错误
+    BYTE bStampError; //废票章错误
+    BYTE bHeadError; //打印头抬起压下错误
+    BYTE bCorrectResetError; //纠偏模块错误
+    BYTE bChannelError; //通道压票错误
+    BYTE bPrinterError; //打印机通信错误
+    BYTE bBeltLackError; //碳带异常
+    BYTE bBeltOverError; //碳带将尽
+    BYTE bTempVolError; //碳带擦除过热
+    BYTE bMotorError; //电机驱动异常
+    BYTE bMotorComFaiL; //电机板通信失败
+    BYTE bPaperJamError; //卡纸错误
+    BYTE bFeedingError; //票箱分纸失败
+    BYTE bPaperLengthError; //票据长度错误
+    BYTE bDoubleDocError; //重张错误
+    BYTE bCorrectionError; //纠偏错误
+    BYTE bHeatOpen; //加热模块打开
+    BYTE bMagnetOn; //拉力挚打开
+    BYTE bHaveData; //有扫描数据
+    BYTE bRibbonEmpty; //碳带缺失
+    BYTE bBackDoorOpen; //后门打开
+    BYTE bFPGAError; //FPGA 通信错误
+    BYTE bRetrackHasPaper; //退票通道有票，废票箱入口处
+    BYTE bCorrectionHasPaper; //纠偏位置有票
+    BYTE bRecycleHasPaper; //忘取回收有票
+    BYTE bVoltError; //电压错误
+    BYTE bReserved1; //保留位
+}tDeviceStatus;
+
+//票据信息结构体
+typedef struct CheckInfo
+{
+    int iCheckSN;									//票据编号
+    int iCheckCoding;								//票据编码
+    int iCheckLen;									//票据长度
+    int iCheckWid;									//票据宽度
+}tCheckInfo;
+
+//配置项结构体
+typedef struct DeviceConfig
+{
+    int iUpdateFlag;								//升级标志
+    int iBoxNum;									//票箱数
+    int iCorrectDif;								//机器纠偏偏差
+    int	iReserve1;									//保留
+    int	iReserve2;
+    int	iReserve3;
+    int	iReserve4;
+    int	iReserve5;
+    tCheckInfo iCheckInfo[10];
+}tDeviceConfig;
+
+typedef struct sBill_Identify_Info
+{
+    int   BillType;          //大额（芯片）存单4  普通存单2  转账支票0  现金支票1 其他支票3
+    int   BankCode;          //银行编码（仅支持支票）本行支票0  其他行-1（目前农行支票0 他行支票1）
+    int   IsFactComp;        //要素齐全结果
+    int   IsIdentification;     //鉴伪结果
+    int   IsDirection;       //票据放置方向 票据放置方向0：正面向右，未倒置1：正面向右，倒置2：正面向左，未倒置3：正面向左，倒置
+    int   isIdentify;        //是否需要鉴伪（只输出字符串）  是0 ，否1
+    char qr_code[128];    //二维码结果
+
+    char ocr_bdrticket[32];		//票号
+    char ocr_bdraccount[32];		//账号
+    char ccr_code[32];				//印章串码
+
+    char ocr_numcode_01[32];  		//上票号
+    char ocr_numcode_02[32]; 		//下票号
+    char ocr_drawerAct[32];     //出票人账号
+    char ocr_amtFigures[128];    //小写金额
+    char ocr_amtWords[128];      //大写金额
+    char ocr_password[32];      //密码
+    char ocr_bankcode[32];    //行号
+    char ocr_issueDate[32];     //出票日期
+    char ocr_payee[128];         // 收款人
+    char ocr_payBankName[128];   //付款行名称
+    char ocr_endorser[32];     //背书人签章
+    char ocr_payeeAndIDCarD[128];   //收款人名字和身份证号码
+
+}SBILLIDENTIFYINFO;
+
+//#include "g_header.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+    LIBUSP_BPM22_API int dll_test(int aa);
+
+//    LIBUSP_BPM22_API int PRE_CDECL openDevice() POST_CDECL;
+//
+//    LIBUSP_BPM22_API void PRE_CDECL closeDevice() POST_CDECL;
+
+#ifdef __cplusplus
+}
+#endif
+#endif /* SRC_LIBUSP_BPM22_H_ */

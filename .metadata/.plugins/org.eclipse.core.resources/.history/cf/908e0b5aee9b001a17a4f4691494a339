@@ -1,0 +1,43 @@
+#ifndef __USBBASIC_H__
+#define __USBBASIC_H__
+
+#include "libs/libusb-1.0/libusb.h"
+#include "g_header.h"
+
+extern libusb_device_handle *u_devHandle;
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+	int device_init(void);
+	libusb_device_handle* device_openWithID(const us_short u_vid, const us_short u_pid);
+	int device_config(libusb_device_handle *u_dev, const int cfg, const int inf);
+	int device_config_info_printf();
+
+	void device_close(void);
+
+	int usbBusWrite(us_byte *p_data, int *p_length, int s_timeout = 0);
+	int usbBusRead(us_byte *p_data, int *p_length, int s_timeout = 0);
+
+	/**/
+	us_short g_getCRC16(const us_byte *p_data, int p_length);
+
+    int execCmdWrite(us_short t_fi, const us_byte *iData, int is_length, int it_length,
+                      int iFlag, int iNum, int iClean = 0);
+    int execCmdCoder(const us_byte *iData, int iLength, int iClean = 0);
+    int execBusClear();
+    int execCmdRead(us_byte *iData, int &it_length, int s_timeout = READ_BUS_TIMEOUT);
+
+    int execCmdCfm(int tNum, us_short tFlag);
+    int execCfmChk(us_byte *iData, int iNum, us_short iFlag);
+
+    int execSendData(us_short t_fi, const char *iData, unsigned int iLength, unsigned int iMaxLength,
+                     us_short iFlag);
+    int execSaveRGBData(char *iData, int &iLength, int iType, us_short iFlag);
+
+#ifdef __cplusplus
+}
+#endif
+#endif // USBBASIC_H

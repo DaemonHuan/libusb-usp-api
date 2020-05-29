@@ -1,0 +1,12 @@
+/*
+ * libusp_bpm21.cpp
+ *
+ *  Created on: 2020Äê5ÔÂ22ÈÕ
+ *      Author: JK
+ */
+#include "libusp_bpm21.h"
+
+int PRE_CDECL dll_test(int aa)
+{
+	return (aa + 1);
+}

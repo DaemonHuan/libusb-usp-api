@@ -1,0 +1,79 @@
+##
+## libusp_bpm22.c
+##
+##  Created on: 2020Äê4ÔÂ21ÈÕ
+##      Author: JK
+##
+ 
+# General configuration variables:
+CC 		= gcc
+CXX 	= g++
+AR 		= ar
+RM 		= rm -rf
+DEBUG 	= 
+CFLAGS 	= $(DEBUG) -O3 -Wall -c -fmessage-length=0 -MMD -MP
+TIME 	= $(shell date +%Y%m%d)
+
+OBJ 	= usbBasic.o cdebug.o cJSON_Utils.o cJSON.o libusp_BPM22.o
+
+LIBS 	= -lusb-1.0 -lFreeImage
+
+TOP_PATH = $(shell pwd)/..
+LIB_PATH = -L$(TOP_PATH)/libs \
+	-L$(TOP_PATH)/libs/libusb-1.0.22 \
+	-L$(TOP_PATH)/libs/freeimage3180 \
+	-L$(TOP_PATH)/libs/plus \
+	-L$(TOP_PATH)/libs/plus/bill_item
+	
+INC_PATH = -I$(TOP_PATH) \
+	-I$(TOP_PATH)/usbBasic \
+	-I$(TOP_PATH)/libs
+
+# All Target
+all: libusp_BPM22.dll
+
+usbBasic.o: $(TOP_PATH)/usbBasic/g_header.h $(TOP_PATH)/usbBasic/usbbasic.h
+	$(CXX) $(CFLAGS) $(INC_PATH) $(LIBS) $(TOP_PATH)/usbBasic/usbbasic.cpp
+
+cdebug.o: $(TOP_PATH)/cDebug-log/cdebug.h
+	$(CXX) $(CFLAGS) $(INC_PATH) $(LIBS) $(TOP_PATH)/cDebug-log/cdebug.cpp
+
+cJSON.o: $(TOP_PATH)/cjson/cJSON.h
+	$(CC) $(CFLAGS) $(INC_PATH) $(LIBS) $(TOP_PATH)/cjson/cJSON.c
+	
+cJSON_Utils.o: $(TOP_PATH)/cjson/cJSON_Utils.h
+	$(CC) $(CFLAGS) $(INC_PATH) $(LIBS) $(TOP_PATH)/cjson/cJSON_Utils.c
+
+libusp_BPM22.o: $(TOP_PATH)/libusp_BPM22/src/libusp_bpm22.h
+	$(CXX) $(CFLAGS) $(INC_PATH) $(LIBS) $(TOP_PATH)/libusp_BPM22/src/libusp_bpm22.cpp
+	
+libusp_BPM22.dll: $(OBJ)
+	@echo ''
+	@echo ''
+	@echo '-- Invoking: Cross G++ Linker With MinGW-GCC'
+	@echo '-- Building target: $@'
+	$(CXX) $(LIB_PATH) -shared -Wl,--out-implib="libusp_BPM22.a" -o "libusp_BPM22.dll" $(OBJ) $(LIBS)
+	@echo '-- Finished building target with makefile.cross'
+
+clean:
+	-$(RM) $(OBJ) *.d libusp_BPM22.def libusp_BPM22.exp
+	-@echo '-- Finished make clean'
+	
+package:
+	mkdir -p build$(TIME)
+	$(RM) build$(TIME)/*.*
+	mkdir -p build$(TIME)/gcc-win32 build$(TIME)/msvc 
+	@pexports libusp_BPM22.dll > libusp_BPM22.def
+	@lib /machine:i386 /def:libusp_BPM22.def /out:libusp_BPM22.lib
+	@echo '-- Finished make objects with makefile.cross'
+	cp $(TOP_PATH)/usbBasic/g_header.h $(TOP_PATH)/libusp_BPM22/src/libusp_BPM22.h ./build$(TIME)/
+	cp -f libusp_BPM22.dll libusp_BPM22.a ./build$(TIME)/gcc-win32
+	cp -f libusp_BPM22.dll libusp_BPM22.lib ./build$(TIME)/msvc
+	@echo '-- 'build$(TIME) >>./readme.txt
+
+clear:
+	-$(RM) $(OBJ) *.d libusp_BPM22.dll libusp_BPM22.lib libusp_BPM22.a
+	-$(RM) libusp_BPM22.def libusp_BPM22.exp
+	-@echo '-- Finished make clear'
+	
+.PHONY: all clean dependents

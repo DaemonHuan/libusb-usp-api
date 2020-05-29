@@ -1,0 +1,34 @@
+14:31:46 **** Incremental Build of configuration Release for project libusp_BPM22 ****
+make all 
+Building file: ../src/libusp_bpm22.cpp
+Invoking: Cross G++ Compiler
+g++ -I"D:\workspace\ew-libusp-bpm-api" -I"D:\workspace\ew-libusp-bpm-api\usbBasic" -I"D:\workspace\ew-libusp-bpm-api\libs" -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/libusp_bpm22.d" -MT"src/libusp_bpm22.o" -o "src/libusp_bpm22.o" "../src/libusp_bpm22.cpp"
+../src/libusp_bpm22.cpp: In function 'int execPrintScan_withJson(const char*, int, int, int, int)':
+../src/libusp_bpm22.cpp:401:23: warning: unused variable 'i_ReadRst' [-Wunused-variable]
+     int i_Result = 0, i_ReadRst = 0, i_Count = BUFFER_MAX_LENGTH, i_Flag = M_MAKE_SFLAG;
+                       ^~~~~~~~~
+../src/libusp_bpm22.cpp:401:38: warning: unused variable 'i_Count' [-Wunused-variable]
+     int i_Result = 0, i_ReadRst = 0, i_Count = BUFFER_MAX_LENGTH, i_Flag = M_MAKE_SFLAG;
+                                      ^~~~~~~
+../src/libusp_bpm22.cpp:405:9: warning: unused variable 'iCheckLen' [-Wunused-variable]
+     int iCheckLen = 0, iCheckWid = 0;
+         ^~~~~~~~~
+../src/libusp_bpm22.cpp:405:24: warning: unused variable 'iCheckWid' [-Wunused-variable]
+     int iCheckLen = 0, iCheckWid = 0;
+                        ^~~~~~~~~
+../src/libusp_bpm22.cpp:406:10: warning: unused variable 's_size' [-Wunused-variable]
+     char s_size[512] = "\0", s_bmp[32 * 1024] = "\0", s_txt[32 * 1024] = "\0";
+          ^~~~~~
+../src/libusp_bpm22.cpp:406:30: warning: unused variable 's_bmp' [-Wunused-variable]
+     char s_size[512] = "\0", s_bmp[32 * 1024] = "\0", s_txt[32 * 1024] = "\0";
+                              ^~~~~
+../src/libusp_bpm22.cpp:406:55: warning: unused variable 's_txt' [-Wunused-variable]
+     char s_size[512] = "\0", s_bmp[32 * 1024] = "\0", s_txt[32 * 1024] = "\0";
+                                                       ^~~~~
+Finished building: ../src/libusp_bpm22.cpp
+ 
+Building target: libusp_BPM22.dll
+Invoking: Cross G++ Linker
+g++ -L"D:\workspace\ew-libusp-bpm-api\libs" -L"D:\workspace\ew-libusp-bpm-api\libs\freeimage3180" -L"D:\workspace\ew-libusp-bpm-api\libs\libusb-1.0.22" -shared -Wl,--out-implib=libusp_BPM22.a -o "libusp_BPM22.dll"  ./usbBasic/usbbasic.o  ./src/libusp_bpm22.o  ./cjson/cJSON.o ./cjson/cJSON_Utils.o  ./cDebug-log/cdebug.o   -lFreeImage -lusb-1.0
+Finished building target: libusp_BPM22.dll
+ 
